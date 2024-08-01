@@ -19,7 +19,7 @@
             "email": "moritz.ngo@kandoh.de"
         }
     ],
-    "license": "LGPL-3.0-or-later",
+    "license": "GPL-3.0-or-later",
     "require": {
         "php": ">=7.4 || >=8.0",
         "typo3/cms-core": "^11.5",
