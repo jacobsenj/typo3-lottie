@@ -314,3 +314,4 @@ var
 *GENERATED*
 composer.lock
 .php-cs-fixer.cache
+phpstan.neon

@@ -30,6 +30,7 @@
         "friendsofphp/php-cs-fixer": "^3.61",
         "helmich/typo3-typoscript-lint": "^2.0 || ^3.2",
         "php-parallel-lint/php-parallel-lint": "^1.0",
+        "saschaegerer/phpstan-typo3": "^1.10",
         "typo3/cms-backend": "*",
         "typo3/cms-filelist": "*",
         "typo3/cms-fluid-styled-content": "*",
@@ -72,6 +73,9 @@
         ],
         "code-check:style:fix": [
             "php-cs-fixer fix"
+        ],
+        "code-check:phpstan": [
+            "phpstan analyse --memory-limit=4G"
         ]
     },
     "config": {
