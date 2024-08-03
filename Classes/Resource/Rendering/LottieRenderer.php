@@ -9,10 +9,10 @@ declare(strict_types=1);
  * (c) 2019-2024
  */
 
-namespace TheLine\Lottie\Resource\Rendering;
+namespace Kandoh\Lottie\Resource\Rendering;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use TheLine\Lottie\Events\ManipulateOutputBeforeRenderEvent;
+use Kandoh\Lottie\Events\ManipulateOutputBeforeRenderEvent;
 use TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;

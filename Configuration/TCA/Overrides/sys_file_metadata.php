@@ -22,7 +22,7 @@ call_user_func(function () {
                     ['', 1],
                 ],
             ],
-            'displayCond' => 'USER:' . \TheLine\Lottie\Backend\DisplayConditions::class . '->checkIfIsJsonFile',
+            'displayCond' => 'USER:' . \Kandoh\Lottie\Backend\DisplayConditions::class . '->checkIfIsJsonFile',
         ],
     ];
 

@@ -9,9 +9,9 @@ declare(strict_types=1);
  * (c) 2019-2024
  */
 
-namespace TheLine\Lottie\Events;
+namespace Kandoh\Lottie\Events;
 
-use TheLine\Lottie\Resource\Rendering\LottieRenderer;
+use Kandoh\Lottie\Resource\Rendering\LottieRenderer;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 

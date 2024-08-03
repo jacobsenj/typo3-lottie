@@ -7,8 +7,8 @@ $EM_CONF[$_EXTKEY] = [
 	'version' => '1.4.0',
 	'state' => 'stable',
 	'clearCacheOnLoad' => true,
-	'author' => 'theLine',
-	'author_email' => 'typo3@theline.uber.space',
+	'author' => 'theLine, Moritz Ngo',
+	'author_email' => 'typo3@theline.uber.space, moritz.ngo@kandoh.de',
 	'constraints' => [
 		'depends' => [
 			'typo3' => '11.0.0-11.5.99',
@@ -20,7 +20,7 @@ $EM_CONF[$_EXTKEY] = [
 	],
 	'autoload' => [
 		'psr-4' => [
-			'TheLine\\Lottie\\' => 'Classes',
+			'Kandoh\\Lottie\\' => 'Classes',
 		],
 	],
 ];

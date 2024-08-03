@@ -9,7 +9,7 @@ declare(strict_types=1);
  * (c) 2019-2024
  */
 
-namespace TheLine\Lottie\Backend;
+namespace Kandoh\Lottie\Backend;
 
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileRepository;

@@ -4,8 +4,8 @@ services:
         autoconfigure: true
         public: false
 
-    TheLine\Lottie\:
+    Kandoh\Lottie\:
         resource: '../Classes/*'
 
-    TheLine\Lottie\Backend\DisplayConditions:
+    Kandoh\Lottie\Backend\DisplayConditions:
         public: true
