@@ -26,9 +26,11 @@ $config->addRules([
     ],
 ]);
 $config->getFinder()
-    ->in([
-        __DIR__ . '/Classes/',
-        __DIR__ . '/Configuration/TCA/',
+    ->in(__DIR__)
+    ->exclude([
+        '.Build',
+        '.ddev',
+        'Resources',
     ])
 ;
 return $config;

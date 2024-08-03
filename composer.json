@@ -27,6 +27,9 @@
         "ext-json": "*"
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.61",
+        "helmich/typo3-typoscript-lint": "^2.0 || ^3.2",
+        "php-parallel-lint/php-parallel-lint": "^1.0",
         "typo3/cms-backend": "*",
         "typo3/cms-filelist": "*",
         "typo3/cms-fluid-styled-content": "*",
@@ -36,10 +39,7 @@
         "typo3/cms-lowlevel": "*",
         "typo3/cms-recordlist": "*",
         "typo3/cms-tstemplate": "*",
-        "php-parallel-lint/php-parallel-lint": "^1.0",
-        "typo3/coding-standards": "^0.7 || ^0.8",
-        "friendsofphp/php-cs-fixer": "^3.61",
-        "helmich/typo3-typoscript-lint": "^2.0 || ^3.2"
+        "typo3/coding-standards": "^0.7 || ^0.8"
     },
     "autoload": {
         "psr-4": {
@@ -54,22 +54,24 @@
         "_cleanup": [
             "rm -rf .Build composer.lock"
         ],
-        "test": [
-            "@test-php-lint",
-            "@test-phpcs",
-            "@test-typoscript-lint"
+        "lint": [
+            "@lint:php",
+            "@lint:typoscript"
         ],
-        "test-php-lint": [
+        "lint:php": [
             "parallel-lint ./Classes/ ./Configuration/TCA/"
         ],
-        "test-phpcs": [
-            "php-cs-fixer fix --dry-run -v --config=.php-cs-fixer.dist.php ./Classes/ ./Configuration/TCA/"
-        ],
-        "test-phpcs-fix": [
-            "php-cs-fixer fix -v --config=.php-cs-fixer.dist.php ./Classes/ ./Configuration/TCA/"
-        ],
-        "test-typoscript-lint": [
+        "lint:typoscript": [
             "typoscript-lint -c Configuration/TypoScriptLintConfig.yaml -n --fail-on-warnings ./Configuration/TypoScript/"
+        ],
+        "code-check": [
+            "@code-check:style"
+        ],
+        "code-check:style": [
+            "php-cs-fixer fix --dry-run"
+        ],
+        "code-check:style:fix": [
+            "php-cs-fixer fix"
         ]
     },
     "config": {
