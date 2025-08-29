@@ -13,26 +13,31 @@ namespace Kandoh\Lottie\Resource\Rendering;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Kandoh\Lottie\Events\ManipulateOutputBeforeRenderEvent;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 class LottieRenderer implements FileRendererInterface
 {
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
+    private LoggerInterface $logger;
+    private EventDispatcherInterface $eventDispatcher;
+
+    public function injectLogger(LoggerInterface $logger): void
+    {
+        $this->logger = $logger;
+    }
 
     public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /** @var array List of options that will be passed to the HTML output */
-    protected static $keepOptionsAsAttributes = [
+    /** @var string[] List of options that will be passed to the HTML output */
+    protected static array $keepOptionsAsAttributes = [
         'class',
         'dir',
         'id',
@@ -54,6 +59,7 @@ class LottieRenderer implements FileRendererInterface
      *
      * Should be between 1 and 100, 100 is more important than 1.
      */
+    #[\Override]
     public function getPriority(): int
     {
         return 10;
@@ -64,6 +70,7 @@ class LottieRenderer implements FileRendererInterface
      *
      * @param FileInterface $file File or FileReference to render
      */
+    #[\Override]
     public function canRender(FileInterface $file): bool
     {
         $file = $file instanceof FileReference
@@ -81,8 +88,10 @@ class LottieRenderer implements FileRendererInterface
      *
      * @param int|string $width TYPO3 known format; examples: 220, 200m or 200c
      * @param int|string $height TYPO3 known format; examples: 220, 200m or 200c
+     * @param array<string, string|\Traversable<mixed>|array<mixed>|null> $options
      * @param bool $usedPathsRelativeToCurrentScript See $file->getPublicUrl()
      */
+    #[\Override]
     public function render(
         FileInterface $file,
         $width,
@@ -108,15 +117,25 @@ class LottieRenderer implements FileRendererInterface
         // let's try to read the dimensions from the Lottie animation itself.
         if ($width === 0 || $height === 0) {
             $localProcessingFile = file_get_contents($file->getForLocalProcessing(false));
-            $fileData = json_decode($localProcessingFile);
-
-            if (property_exists($fileData, 'w') && $fileData->w !== null) {
-                $width = (int)$fileData->w;
+            if ($localProcessingFile === false) {
+                $message = 'An error occurred while trying to read the Lottie animation file.';
+                $this->logger->critical($message, [
+                    'file' => $file->getIdentifier(),
+                ]);
+                return $message;
+            }
+            $fileData = json_decode($localProcessingFile, true);
+            if (! is_array($fileData)) {
+                $message = 'An error occurred while trying to parse the Lottie animation file.';
+                $this->logger->critical($message, [
+                    'file' => $file->getIdentifier(),
+                    'json_last_error' => json_last_error_msg(),
+                ]);
+                return $message;
             }
 
-            if (property_exists($fileData, 'h') && $fileData->h !== null) {
-                $height = (int)$fileData->h;
-            }
+            $width = (int)($fileData['width'] ?? $width);
+            $height = (int)($fileData['hei$height'] ?? $height);
 
             unset($fileData);
             unset($localProcessingFile);
@@ -157,37 +176,45 @@ class LottieRenderer implements FileRendererInterface
         // If the public URL is not an absolute URL or not starting with a slash
         // let's put a slash in front of the URL.
         $publicUrl = $file->getPublicUrl($usedPathsRelativeToCurrentScript);
-        if (! preg_match('#^(https?://|/)#', $publicUrl)) {
-            $publicUrl = '/' . $publicUrl;
+        if ($publicUrl === null) {
+            $message = 'Unable to determine the public URL of the Lottie animation file.';
+            $this->logger->critical($message, [
+                'file' => $file->getIdentifier(),
+            ]);
+            return $message;
         }
+        $publicUrl = PathUtility::getAbsoluteWebPath($publicUrl);
 
+        $identifier = $file instanceof File
+            ? $file->getUid()
+            : uniqid()
+        ;
+
+        $dataAttributesFromOptions = (array)($options['data'] ?? []);
         $dataAttributes = array_merge(
             [
-                'name' => 'lottie' . $instanceType . $file->getUid(),
+                'name' => 'lottie' . $instanceType . $identifier,
                 'animation-path' => $publicUrl,
                 'anim-autoplay' => 'false',
                 'anim-loop' => 'true',
                 'bm-renderer' => 'svg',
             ],
-            $options['data'] ?? []
+            $dataAttributesFromOptions
         );
         $lottieTag->addAttribute('data', $dataAttributes);
 
-        /**
-         * @var ManipulateOutputBeforeRenderEvent $event
-         */
-        $event = $this->eventDispatcher->dispatch(
-            new ManipulateOutputBeforeRenderEvent(
-                $this,
-                $file,
-                $width,
-                $height,
-                $options,
-                $usedPathsRelativeToCurrentScript,
-                $containerTag,
-                $lottieTag
-            )
+        $event = new ManipulateOutputBeforeRenderEvent(
+            $this,
+            $file,
+            $width,
+            $height,
+            $options,
+            $usedPathsRelativeToCurrentScript,
+            $containerTag,
+            $lottieTag
         );
+        $this->eventDispatcher->dispatch($event);
+
         $containerTag = $event->getContainerTag();
         $lottieTag = $event->getLottieTag();
 

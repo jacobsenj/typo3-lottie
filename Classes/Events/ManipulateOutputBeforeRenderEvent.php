@@ -18,145 +18,71 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 final class ManipulateOutputBeforeRenderEvent
 {
     /**
-     * @var LottieRenderer
-     */
-    private $lottieRenderer;
-    /**
-     * @var FileInterface
-     */
-    private $file;
-    /**
-     * @var int|string
-     */
-    private $width;
-    /**
-     * @var int|string
-     */
-    private $height;
-    /**
-     * @var array
-     */
-    private $options;
-    /**
-     * @var bool
-     */
-    private $usedPathsRelativeToCurrentScript;
-    /**
-     * @var TagBuilder
-     */
-    private $containerTag;
-    /**
-     * @var TagBuilder
-     */
-    private $lottieTag;
-
-    /**
-     * @param LottieRenderer $lottieRenderer
-     * @param FileInterface $file
-     * @param int|string $width
-     * @param int|string $height
-     * @param array $options
-     * @param bool $usedPathsRelativeToCurrentScript
-     * @param TagBuilder $containerTag
-     * @param TagBuilder $lottieTag
+     * @param array<mixed> $options
      */
     public function __construct(
-        LottieRenderer $lottieRenderer,
-        FileInterface $file,
-        $width,
-        $height,
-        array $options,
-        bool $usedPathsRelativeToCurrentScript,
-        TagBuilder $containerTag,
-        TagBuilder $lottieTag
-    ) {
-        $this->lottieRenderer = $lottieRenderer;
-        $this->file = $file;
-        $this->width = $width;
-        $this->height = $height;
-        $this->options = $options;
-        $this->usedPathsRelativeToCurrentScript = $usedPathsRelativeToCurrentScript;
-        $this->containerTag = $containerTag;
-        $this->lottieTag = $lottieTag;
-    }
+        protected readonly LottieRenderer $lottieRenderer,
+        protected readonly FileInterface $file,
+        protected readonly int|string $width,
+        protected readonly int|string $height,
+        protected readonly array $options,
+        protected readonly bool $usedPathsRelativeToCurrentScript,
+        protected TagBuilder $containerTag,
+        protected TagBuilder $lottieTag
+    ) {}
 
-    /**
-     * @return LottieRenderer
-     */
     public function getLottieRenderer(): LottieRenderer
     {
         return $this->lottieRenderer;
     }
 
-    /**
-     * @return FileInterface
-     */
     public function getFile(): FileInterface
     {
         return $this->file;
     }
 
-    /**
-     * @return int|string
-     */
-    public function getWidth()
+    public function getWidth(): int|string
     {
         return $this->width;
     }
 
-    /**
-     * @return int|string
-     */
-    public function getHeight()
+    public function getHeight(): int|string
     {
         return $this->height;
     }
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function getOptions(): array
     {
         return $this->options;
     }
 
-    /**
-     * @return bool
-     */
     public function isUsedPathsRelativeToCurrentScript(): bool
     {
         return $this->usedPathsRelativeToCurrentScript;
     }
 
-    /**
-     * @return TagBuilder
-     */
     public function getContainerTag(): TagBuilder
     {
         return $this->containerTag;
     }
 
-    /**
-     * @return TagBuilder
-     */
     public function getLottieTag(): TagBuilder
     {
         return $this->lottieTag;
     }
 
-    /**
-     * @param TagBuilder $containerTag
-     */
-    public function setContainerTag(TagBuilder $containerTag): void
+    public function setContainerTag(TagBuilder $containerTag): self
     {
         $this->containerTag = $containerTag;
+        return $this;
     }
 
-    /**
-     * @param TagBuilder $lottieTag
-     */
-    public function setLottieTag(TagBuilder $lottieTag): void
+    public function setLottieTag(TagBuilder $lottieTag): self
     {
         $this->lottieTag = $lottieTag;
+        return $this;
     }
 }

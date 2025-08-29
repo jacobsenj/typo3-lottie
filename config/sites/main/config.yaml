@@ -1,5 +1,5 @@
 base: 'https://typo3-ext-lottie.ddev.site/'
-errorHandling: {  }
+errorHandling: []
 languages:
   -
     title: English
@@ -14,4 +14,4 @@ languages:
     direction: ltr
     flag: us
 rootPageId: 1
-routes: {  }
+routes: []

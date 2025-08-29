@@ -9,3 +9,6 @@ trim_trailing_whitespace = true
 
 [*.{md,markdown}]
 trim_trailing_whitespace = false
+
+[*.neon]
+indent_style = tab

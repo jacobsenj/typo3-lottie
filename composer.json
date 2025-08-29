@@ -21,7 +21,7 @@
     ],
     "license": "GPL-3.0-or-later",
     "require": {
-        "php": ">=7.4 || >=8.0",
+        "php": "^8.2",
         "typo3/cms-core": "^11.5",
         "typo3/cms-filemetadata": "^11.5",
         "ext-json": "*"
@@ -66,7 +66,8 @@
             "typoscript-lint -c Configuration/TypoScriptLintConfig.yaml -n --fail-on-warnings ./Configuration/TypoScript/"
         ],
         "code-check": [
-            "@code-check:style"
+            "@code-check:style",
+            "@code-check:phpstan"
         ],
         "code-check:style": [
             "php-cs-fixer fix --dry-run"

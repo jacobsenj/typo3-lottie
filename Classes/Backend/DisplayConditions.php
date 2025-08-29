@@ -13,13 +13,11 @@ namespace Kandoh\Lottie\Backend;
 
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileRepository;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 class DisplayConditions
 {
-    /** @var FileRepository $fileRepository */
-    protected $fileRepository;
+    protected FileRepository $fileRepository;
 
     public function injectFileRepository(FileRepository $fileRepository): void
     {
@@ -28,7 +26,8 @@ class DisplayConditions
 
     /**
      * Returns true if the given File's extension is 'json'.
-     *
+     * @param array<mixed> $parameters
+     * @throws \RuntimeException
      * @throws \InvalidArgumentException
      */
     public function checkIfIsJsonFile(array $parameters): bool
@@ -38,7 +37,7 @@ class DisplayConditions
 
         // If the sys_file's uid is not present there must be something terribly wrong!
         // But for now just return false.
-        if (! isset($record['file'][0])) {
+        if (! is_array ($record) || ! isset($record['file'][0])) {
             return false;
         }
 
@@ -48,7 +47,7 @@ class DisplayConditions
         }
 
         // Find the File object by the given uid …
-        $file = $this->getFileRepository()->findByUid($record['file'][0]);
+        $file = $this->fileRepository->findByUid($record['file'][0]);
         if ($file instanceof FileInterface) {
             // … and return true, if the File's extension is 'json'.
             return $file->getExtension() === 'json';
@@ -56,14 +55,5 @@ class DisplayConditions
 
         // At this point we can be sure that the given file is not a JSON file, thus return false.
         return false;
-    }
-
-    protected function getFileRepository(): FileRepository
-    {
-        if (! $this->fileRepository instanceof FileRepository) {
-            $this->fileRepository = GeneralUtility::makeInstance(FileRepository::class);
-        }
-
-        return $this->fileRepository;
     }
 }
