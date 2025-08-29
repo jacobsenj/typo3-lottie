@@ -5,7 +5,6 @@ const {
 	watch,
 } = require('gulp');
 const clean = require('gulp-clean');
-const merge = require('merge-stream');
 const rename = require('gulp-rename');
 const sourcemaps = require('gulp-sourcemaps');
 const uglify = require('gulp-uglify');
@@ -35,10 +34,10 @@ exports.clean = function _clean() {
  * Copies already generated and minified files
  */
 exports.copy = function _copy() {
-	return merge(
-			src(paths.src.lottieFiles),
-			src(paths.src.inViewFiles)
-		)
+	return src([
+			paths.src.lottieFiles,
+			paths.src.inViewFiles
+		])
 		.pipe(dest(paths.dest.js))
 	;
 };
