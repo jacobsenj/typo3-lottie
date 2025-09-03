@@ -14,6 +14,7 @@ namespace Kandoh\Lottie\Resource\Rendering;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Kandoh\Lottie\Events\ManipulateOutputBeforeRenderEvent;
 use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
@@ -26,9 +27,9 @@ class LottieRenderer implements FileRendererInterface
     private LoggerInterface $logger;
     private EventDispatcherInterface $eventDispatcher;
 
-    public function injectLogger(LoggerInterface $logger): void
+    public function injectLogger(LogManager $loggerManager): void
     {
-        $this->logger = $logger;
+        $this->logger = $loggerManager->getLogger(static::class);
     }
 
     public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher): void
