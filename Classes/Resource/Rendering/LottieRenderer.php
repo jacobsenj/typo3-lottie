@@ -101,7 +101,9 @@ class LottieRenderer implements FileRendererInterface
         $usedPathsRelativeToCurrentScript = false
     ): string {
         $containerTag = new TagBuilder('div');
+        $containerTag->forceClosingTag(true);
         $lottieTag = new TagBuilder('div');
+        $lottieTag->forceClosingTag(true);
 
         // It may be useful to know if $file was a File or FileReference.
         $instanceType = '';
