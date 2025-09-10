@@ -191,14 +191,37 @@ class LottieRenderer implements FileRendererInterface
             : uniqid()
         ;
 
+        $autoplay = 'false';
+        if (isset($options['autoplay'])) {
+            $autoplay = (bool)$options['autoplay'] ? 'true' : 'false';
+        }
+
+        $loop = 'true';
+        if (isset($options['loop'])) {
+            if (is_numeric($options['loop']) && (int)$options['loop'] > 1) {
+                $loop = (int)$options['loop'];
+            } else {
+                $loop = (bool)$options['loop'] ? 'true' : 'false';
+            }
+        }
+
+        $renderer = 'svg';
+        $validRenderers = ['svg', 'canvas', 'html'];
+        if (
+            isset($options['renderer'])
+            && in_array($options['renderer'], $validRenderers, true)
+        ) {
+            $renderer = $options['renderer'];
+        }
+
         $dataAttributesFromOptions = (array)($options['data'] ?? []);
         $dataAttributes = array_merge(
             [
                 'name' => 'lottie' . $instanceType . $identifier,
                 'animation-path' => $publicUrl,
-                'anim-autoplay' => 'false',
-                'anim-loop' => 'true',
-                'bm-renderer' => 'svg',
+                'anim-autoplay' => $autoplay,
+                'anim-loop' => $loop,
+                'bm-renderer' => $renderer,
             ],
             $dataAttributesFromOptions
         );
