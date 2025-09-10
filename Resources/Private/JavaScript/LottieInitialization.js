@@ -4,8 +4,11 @@
 	if (typeof define === 'function' && define.amd) {
 		define(['lottie', 'in-view'], factory);
 	} else {
-		root.LottieIntialization = factory(root.lottie, root.inView);
-		root.LottieIntializationInstance = new root.LottieIntialization();
+		root.LottieInitialization = factory(root.lottie, root.inView);
+		root.LottieInitializationInstance = new root.LottieInitialization();
+        // Support old naming mistake, this will be removed in future versions
+		root.LottieIntialization = root.LottieInitialization
+		root.LottieIntializationInstance = root.LottieInitializationInstance
 	}
 } (typeof self !== 'undefined' ? self : this, function (lottie, inView) {
 
@@ -49,9 +52,9 @@
 		return extended;
 	};
 
-	function LottieIntialization (options) {
+	function LottieInitialization (options) {
 		var that = this;
-		that.options = extend(true, LottieIntialization.defaultOptions, options);
+		that.options = extend(true, LottieInitialization.defaultOptions, options);
 
 		lottie.searchAnimations();
 
@@ -68,11 +71,11 @@
 			});
 		});
 	}
-	LottieIntialization.defaultOptions = {
+	LottieInitialization.defaultOptions = {
 		inViewSelector: '.lottie',
 		inViewThreshold: 0.5
 	};
-	LottieIntialization.prototype = extend(true, LottieIntialization.prototype, {
+	LottieInitialization.prototype = extend(true, LottieInitialization.prototype, {
 		inViewLottieHandler: function (element, callback) {
 			this.getRegisteredAnimations().forEach(function (animation) {
 				if (element === animation.wrapper) {
@@ -88,6 +91,5 @@
 		}
 	});
 
-	return LottieIntialization;
-
+	return LottieInitialization;
 }));
