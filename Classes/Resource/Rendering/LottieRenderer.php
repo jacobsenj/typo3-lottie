@@ -154,7 +154,11 @@ class LottieRenderer implements FileRendererInterface
         $class = $lottieTag->getAttribute('class') ?? '';
         $lottieTag->addAttribute('class', trim($class . ' lottie'));
 
-        $containerTag->addAttribute('class', 'lottie-container');
+        $containerClass = 'lottie-container';
+        if (isset($options['containerClass']) && ! empty($options['containerClass'])) {
+            $containerClass = trim($options['containerClass'] . ' ' . $containerClass);
+        }
+        $containerTag->addAttribute('class', $containerClass);
 
         // If the width and height could be properly determined, add some
         // inline styling to preserve the required space to prevent
