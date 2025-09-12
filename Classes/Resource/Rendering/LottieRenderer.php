@@ -204,8 +204,10 @@ class LottieRenderer implements FileRendererInterface
 
         $loop = 'true';
         if (isset($options['loop'])) {
-            if (is_numeric($options['loop']) && (int)$options['loop'] > 1) {
+            if (is_numeric($options['loop'])) {
                 $loop = (int)$options['loop'];
+            } else if (is_string($options['loop'])) {
+                $loop = strtolower($options['loop']) === 'false' ? 'false' : 'true';
             } else {
                 $loop = (bool)$options['loop'] ? 'true' : 'false';
             }
