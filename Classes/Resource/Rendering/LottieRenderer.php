@@ -11,14 +11,14 @@ declare(strict_types=1);
 
 namespace Kandoh\Lottie\Resource\Rendering;
 
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Kandoh\Lottie\Events\ManipulateOutputBeforeRenderEvent;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
+use TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
@@ -26,16 +26,6 @@ class LottieRenderer implements FileRendererInterface
 {
     private LoggerInterface $logger;
     private EventDispatcherInterface $eventDispatcher;
-
-    public function injectLogger(LogManager $loggerManager): void
-    {
-        $this->logger = $loggerManager->getLogger(static::class);
-    }
-
-    public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher): void
-    {
-        $this->eventDispatcher = $eventDispatcher;
-    }
 
     /** @var string[] List of options that will be passed to the HTML output */
     protected static array $keepOptionsAsAttributes = [
@@ -50,6 +40,16 @@ class LottieRenderer implements FileRendererInterface
         'onclick',
         'alt',
     ];
+
+    public function injectLogger(LogManager $loggerManager): void
+    {
+        $this->logger = $loggerManager->getLogger(static::class);
+    }
+
+    public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher): void
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
 
     /**
      * Returns the priority of the renderer.
@@ -90,15 +90,13 @@ class LottieRenderer implements FileRendererInterface
      * @param int|string $width TYPO3 known format; examples: 220, 200m or 200c
      * @param int|string $height TYPO3 known format; examples: 220, 200m or 200c
      * @param array<string, string|\Traversable<mixed>|array<mixed>|null> $options
-     * @param bool $usedPathsRelativeToCurrentScript See $file->getPublicUrl()
      */
     #[\Override]
     public function render(
         FileInterface $file,
         $width,
         $height,
-        array $options = [],
-        $usedPathsRelativeToCurrentScript = false
+        array $options = []
     ): string {
         $containerTag = new TagBuilder('div');
         $containerTag->forceClosingTag(true);
@@ -107,9 +105,9 @@ class LottieRenderer implements FileRendererInterface
 
         // It may be useful to know if $file was a File or FileReference.
         $instanceType = '';
-        if (get_class($file) == File::class) {
+        if ($file::class == File::class) {
             $instanceType = 'File';
-        } elseif (get_class($file) == FileReference::class) {
+        } elseif ($file::class == FileReference::class) {
             $instanceType = 'FileReference';
         }
 
@@ -182,7 +180,7 @@ class LottieRenderer implements FileRendererInterface
 
         // If the public URL is not an absolute URL or not starting with a slash
         // let's put a slash in front of the URL.
-        $publicUrl = $file->getPublicUrl($usedPathsRelativeToCurrentScript);
+        $publicUrl = $file->getPublicUrl();
         if ($publicUrl === null) {
             $message = 'Unable to determine the public URL of the Lottie animation file.';
             $this->logger->critical($message, [
@@ -206,7 +204,7 @@ class LottieRenderer implements FileRendererInterface
         if (isset($options['loop'])) {
             if (is_numeric($options['loop'])) {
                 $loop = (int)$options['loop'];
-            } else if (is_string($options['loop'])) {
+            } elseif (is_string($options['loop'])) {
                 $loop = strtolower($options['loop']) === 'false' ? 'false' : 'true';
             } else {
                 $loop = (bool)$options['loop'] ? 'true' : 'false';
@@ -241,7 +239,6 @@ class LottieRenderer implements FileRendererInterface
             $width,
             $height,
             $options,
-            $usedPathsRelativeToCurrentScript,
             $containerTag,
             $lottieTag
         );

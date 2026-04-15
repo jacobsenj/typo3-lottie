@@ -1,0 +1,8 @@
+{
+    "require-dev": {
+        "ssch/typo3-rector": "*"
+    },
+    "config": {
+        "bin-dir": "bin"
+    }
+}

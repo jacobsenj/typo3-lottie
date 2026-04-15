@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace Kandoh\Lottie\Backend;
 
-use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -37,20 +36,21 @@ class DisplayConditions
 
         // If the sys_file's uid is not present there must be something terribly wrong!
         // But for now just return false.
-        if (! is_array ($record) || ! isset($record['file'][0])) {
+        if (!is_array($record) || !isset($record['file'][0])) {
             return false;
         }
 
         // If the sys_file's uid is not an integer return false as well
-        if (! MathUtility::canBeInterpretedAsInteger($record['file'][0])) {
+        if (!MathUtility::canBeInterpretedAsInteger($record['file'][0])) {
             return false;
         }
 
         // Find the File object by the given uid …
-        $file = $this->fileRepository->findByUid($record['file'][0]);
-        if ($file instanceof FileInterface) {
+        try {
+            $file = $this->fileRepository->findByUid((int)$record['file'][0]);
             // … and return true, if the File's extension is 'json'.
             return $file->getExtension() === 'json';
+        } catch (\Exception) {
         }
 
         // At this point we can be sure that the given file is not a JSON file, thus return false.

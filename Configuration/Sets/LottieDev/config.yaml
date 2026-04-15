@@ -1,0 +1,4 @@
+name: kandoh/lottie-dev
+label: 'Lottie'
+dependencies:
+    - kandoh/lottie

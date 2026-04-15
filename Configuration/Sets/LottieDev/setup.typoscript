@@ -1,0 +1,16 @@
+@import 'EXT:lottie/Configuration/TypoScript/setup.typoscript'
+
+page = PAGE
+page {
+    10 = PAGEVIEW
+    10 {
+        paths {
+            100 = EXT:lottie/Resources/Private/
+        }
+
+        dataProcessing {
+            1 = page-content
+            1.as = content
+        }
+    }
+}

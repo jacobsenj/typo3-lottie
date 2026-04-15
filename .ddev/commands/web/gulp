@@ -1,0 +1,2 @@
+#!/bin/bash
+cd Resources/Private/Build && ./node_modules/gulp/bin/gulp.js "$@"

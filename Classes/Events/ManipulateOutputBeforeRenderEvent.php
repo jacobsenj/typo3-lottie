@@ -21,14 +21,13 @@ final class ManipulateOutputBeforeRenderEvent
      * @param array<mixed> $options
      */
     public function __construct(
-        protected readonly LottieRenderer $lottieRenderer,
-        protected readonly FileInterface $file,
-        protected readonly int|string $width,
-        protected readonly int|string $height,
-        protected readonly array $options,
-        protected readonly bool $usedPathsRelativeToCurrentScript,
-        protected TagBuilder $containerTag,
-        protected TagBuilder $lottieTag
+        private readonly LottieRenderer $lottieRenderer,
+        private readonly FileInterface $file,
+        private readonly int|string $width,
+        private readonly int|string $height,
+        private readonly array $options,
+        private TagBuilder $containerTag,
+        private TagBuilder $lottieTag
     ) {}
 
     public function getLottieRenderer(): LottieRenderer

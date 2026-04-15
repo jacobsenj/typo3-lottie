@@ -1,0 +1,15 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<f:layout name="Global"/>
+<f:section name="Main">
+    <main>
+        <div class="flex flex-col gap-y-7xl">
+            <!--TYPO3SEARCH_begin-->
+            <f:for each="{content.main.records}" as="contentElement">
+                <f:cObject typoscriptObjectPath="{contentElement.mainType}" table="{contentElement.mainType}" data="{contentElement.rawRecord}"/>
+            </f:for>
+            <!--TYPO3SEARCH_end-->
+        </div>
+    </main>
+</f:section>
+</html>

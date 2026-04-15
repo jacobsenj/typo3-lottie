@@ -1,0 +1,2 @@
+#!/bin/bash
+.Build/vendor/bin/typo3 "$@"

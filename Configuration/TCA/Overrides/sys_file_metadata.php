@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Kandoh\Lottie\Backend\DisplayConditions;
-use TYPO3\CMS\Core\Resource\AbstractFile;
+use TYPO3\CMS\Core\Resource\FileType;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /*
@@ -23,9 +23,6 @@ call_user_func(function () {
             'config' => [
                 'type' => 'check',
                 'renderType' => 'checkboxToggle',
-                'items' => [
-                    ['', 1],
-                ],
             ],
             'displayCond' => 'USER:' . DisplayConditions::class . '->checkIfIsJsonFile',
         ],
@@ -40,8 +37,8 @@ call_user_func(function () {
         'sys_file_metadata',
         implode(',', array_keys($columns)),
         implode(',', [
-            AbstractFile::FILETYPE_TEXT,
-            AbstractFile::FILETYPE_APPLICATION,
+            FileType::TEXT->value,
+            FileType::APPLICATION->value,
         ])
     );
 });

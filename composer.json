@@ -17,13 +17,17 @@
         {
             "name": "Moritz Ngo",
             "email": "moritz.ngo@kandoh.de"
+        },
+        {
+            "name": "Jens Jacobsen",
+            "email": "jens.jacobsen@ueberbit.de"
         }
     ],
     "license": "GPL-3.0-or-later",
     "require": {
-        "php": "^8.2",
-        "typo3/cms-core": "^11.5",
-        "typo3/cms-filemetadata": "^11.5",
+        "php": "^8.4",
+        "typo3/cms-core": "^13.4",
+        "typo3/cms-filemetadata": "^13.4",
         "ext-json": "*"
     },
     "require-dev": {
@@ -81,7 +85,7 @@
     },
     "config": {
         "vendor-dir": ".Build/vendor",
-        "bin-dir": ".Build/bin",
+        "bin-dir": ".Build/vendor/bin",
         "allow-plugins": {
             "typo3/cms-composer-installers": true,
             "typo3/class-alias-loader": true

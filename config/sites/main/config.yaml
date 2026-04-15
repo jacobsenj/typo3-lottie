@@ -1,5 +1,6 @@
 base: 'https://typo3-ext-lottie.ddev.site/'
-errorHandling: []
+dependencies:
+  - kandoh/lottie-dev
 languages:
   -
     title: English
@@ -14,4 +15,4 @@ languages:
     direction: ltr
     flag: us
 rootPageId: 1
-routes: []
+websiteTitle: ''
